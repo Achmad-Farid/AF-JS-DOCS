@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 
 const esFeatures = {
   es2015: {
-    name: "ES6 / ES2015 (Revolusi Modern JS)",
+    name: "ES6 / ES2015 (Modern JS Revolution)",
     features: [
       {
         id: "let-const",
@@ -42,7 +42,60 @@ render(<div>{count} {name}</div>);`}
           </>
         ),
       },
-      { id: "arrow-functions", title: "Arrow Functions" },
+      {
+        id: "arrow-functions",
+        title: "Arrow Functions",
+        content: () => (
+          <>
+            <p>
+              Arrow functions provide a concise syntax for writing functions in JavaScript.
+              <br />
+              They have lexical <code>this</code> binding and are always anonymous.
+            </p>
+
+            <LiveProvider
+              code={`// Traditional function expression
+const addTraditional = function(a, b) {
+  return a + b;
+};
+
+// Arrow function equivalent
+const addArrow = (a, b) => a + b;
+
+// Single parameter doesn't need parentheses
+const square = x => x * x;
+
+// No parameters need empty parentheses
+const greet = () => 'Hello World!';
+
+// Returning an object literal requires parentheses
+const makePerson = (name, age) => ({ name, age });
+
+render(
+  <div>
+    <p>Traditional: {addTraditional(2, 3)}</p>
+    <p>Arrow: {addArrow(2, 3)}</p>
+    <p>Square: {square(4)}</p>
+    <p>Greeting: {greet()}</p>
+    <p>Person: {JSON.stringify(makePerson("Alice", 25))}</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
       { id: "template-literals", title: "Template Literals" },
       { id: "destructuring", title: "Destructuring (Array & Object)" },
       { id: "default-parameters", title: "Default Parameters" },
