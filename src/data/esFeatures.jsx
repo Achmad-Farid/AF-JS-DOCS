@@ -96,7 +96,71 @@ render(
           </>
         ),
       },
-      { id: "template-literals", title: "Template Literals" },
+      {
+        id: "template-literals",
+        title: "Template Literals",
+        content: () => (
+          <>
+            <p>
+              Template literals (template strings) allow embedded expressions, multiline strings, and string interpolation.
+              <br />
+              They are enclosed in backticks (<code>`</code>) instead of single or double quotes.
+            </p>
+
+            <LiveProvider
+              code={`// Basic string interpolation
+const name = "Alice";
+const age = 25;
+const greeting = \`Hello, \${name}! You are \${age} years old.\`;
+
+// Multiline strings without escape characters
+const poem = \`
+  Roses are red,
+  Violets are blue,
+  Template literals
+  Make strings easier too!
+\`;
+
+// Expressions inside template literals
+const price = 19.99;
+const taxRate = 0.07;
+const total = \`Total: $\${(price * (1 + taxRate)).toFixed(2)}\`;
+
+// Tagged templates (advanced usage)
+function highlight(strings, ...values) {
+  return strings.reduce((result, str, i) => {
+    return \`\${result}\${str}\${values[i] ? \`<mark>\${values[i]}</mark>\` : ''}\`;
+  }, '');
+}
+
+const item = "JavaScript";
+const feature = "template literals";
+const taggedExample = highlight\`Learning \${item} and \${feature} is fun!\`;
+
+render(
+  <div>
+    <p>{greeting}</p>
+    <pre>{poem}</pre>
+    <p>{total}</p>
+    <div dangerouslySetInnerHTML={{ __html: taggedExample }} />
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
       { id: "destructuring", title: "Destructuring (Array & Object)" },
       { id: "default-parameters", title: "Default Parameters" },
       { id: "rest-spread", title: "Rest & Spread Operator" },
