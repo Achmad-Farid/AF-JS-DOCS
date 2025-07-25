@@ -229,7 +229,87 @@ render(
           </>
         ),
       },
-      { id: "destructuring object", title: "Destructuring Object" },
+      {
+        id: "destructuring object",
+        title: "Destructuring Object",
+        content: () => (
+          <>
+            <p>
+              Object destructuring allows unpacking properties from objects into distinct variables.
+              <br />
+              It provides a clean syntax for extracting multiple values from objects with pattern matching.
+            </p>
+
+            <LiveProvider
+              code={`// Basic object destructuring
+const user = {
+  id: 42,
+  name: 'John Doe',
+  age: 30,
+  email: 'john@example.com'
+};
+
+const { name, age, email } = user;
+
+// Renaming variables
+const { name: userName, email: userEmail } = user;
+
+// Default values
+const { isAdmin = false } = user;
+
+// Nested objects
+const company = {
+  name: 'Tech Corp',
+  address: {
+    street: '123 Main St',
+    city: 'San Francisco'
+  }
+};
+
+const { 
+  name: companyName, 
+  address: { city: companyCity } 
+} = company;
+
+// Function parameters
+function greet({ name, age }) {
+  return \`Hello \${name}, you're \${age} years old!\`;
+}
+
+// Rest properties
+const { id, ...userDetails } = user;
+
+// Dynamic property names
+const prop = 'name';
+const { [prop]: dynamicName } = user;
+
+render(
+  <div>
+    <p>Basic: {name}, {age}, {email}</p>
+    <p>Renamed: {userName}, {userEmail}</p>
+    <p>Default: isAdmin = {isAdmin.toString()}</p>
+    <p>Nested: {companyName}, {companyCity}</p>
+    <p>Function: {greet(user)}</p>
+    <p>Rest: {JSON.stringify(userDetails)}</p>
+    <p>Dynamic: {dynamicName}</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
       { id: "default-parameters", title: "Default Parameters" },
       { id: "rest-spread", title: "Rest & Spread Operator" },
       { id: "enhanced-object-literals", title: "Enhanced Object Literals" },
