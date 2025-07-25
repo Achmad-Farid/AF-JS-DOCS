@@ -161,7 +161,75 @@ render(
           </>
         ),
       },
-      { id: "destructuring", title: "Destructuring (Array & Object)" },
+      {
+        id: "destructuring array",
+        title: "Destructuring Array",
+        content: () => (
+          <>
+            <p>
+              Array destructuring allows unpacking values from arrays into distinct variables.
+              <br />
+              It provides a concise way to extract multiple values from arrays or iterables.
+            </p>
+
+            <LiveProvider
+              code={`// Basic array destructuring
+const colors = ['red', 'green', 'blue'];
+const [firstColor, secondColor, thirdColor] = colors;
+
+// Skipping items
+const [,, primaryColor] = colors; // Gets 'blue'
+
+// Default values
+const numbers = [1];
+const [a = 10, b = 20] = numbers; // a=1, b=20
+
+// Swapping variables
+let x = 1, y = 2;
+[x, y] = [y, x]; // Swap without temp variable
+
+// Rest pattern
+const fruits = ['apple', 'banana', 'orange', 'mango'];
+const [firstFruit, ...remainingFruits] = fruits;
+
+// Nested destructuring
+const nested = [1, [2, 3], 4];
+const [first, [second, third], fourth] = nested;
+
+// Function return values
+function getCoordinates() {
+  return [12.34, 56.78];
+}
+const [latitude, longitude] = getCoordinates();
+
+render(
+  <div>
+    <p>Colors: {firstColor}, {secondColor}, {thirdColor}</p>
+    <p>Primary color: {primaryColor}</p>
+    <p>Default values: a={a}, b={b}</p>
+    <p>Swapped: x={x}, y={y}</p>
+    <p>First fruit: {firstFruit}, Rest: {remainingFruits.join(', ')}</p>
+    <p>Nested: second={second}, third={third}</p>
+    <p>Coordinates: {latitude}°N, {longitude}°E</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
+      { id: "destructuring object", title: "Destructuring Object" },
       { id: "default-parameters", title: "Default Parameters" },
       { id: "rest-spread", title: "Rest & Spread Operator" },
       { id: "enhanced-object-literals", title: "Enhanced Object Literals" },
