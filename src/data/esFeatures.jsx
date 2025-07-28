@@ -378,7 +378,81 @@ render(
           </>
         ),
       },
-      { id: "rest-spread", title: "Rest & Spread Operator" },
+      {
+        id: "rest",
+        title: "Rest Operator",
+        content: () => (
+          <>
+            <p>
+              The rest operator (<code>...</code>) allows you to represent an indefinite number of arguments as an array.
+              <br />
+              It can be used in function parameters to capture remaining arguments, or in destructuring to collect remaining elements.
+            </p>
+
+            <LiveProvider
+              code={`// Rest parameters in functions
+function sum(...numbers) {
+  return numbers.reduce((total, num) => total + num, 0);
+}
+
+// Combining with regular parameters
+function joinStrings(separator, ...strings) {
+  return strings.join(separator);
+}
+
+// Rest operator in array destructuring
+const colors = ['red', 'green', 'blue', 'yellow'];
+const [primary, secondary, ...others] = colors;
+
+// Rest operator in object destructuring
+const user = {
+  id: 101,
+  name: 'Alice',
+  age: 25,
+  email: 'alice@example.com'
+};
+const { id, ...userDetails } = user;
+
+// Practical use case: logging with metadata
+function logWithContext(message, ...context) {
+  const timestamp = new Date().toISOString();
+  console.log(\`[\${timestamp}] \${message}\`, ...context);
+}
+
+// Rest operator vs arguments object
+function compareApproaches(a, b) {
+  return {
+    argumentsLength: arguments.length,
+    restLength: [...arguments].length
+  };
+}
+
+render(
+  <div>
+    <p>Sum: {sum(1, 2, 3, 4)}</p>
+    <p>Joined: {joinStrings('-', 'hello', 'world', '!')}</p>
+    <p>Colors: Primary - {primary}, Others - {others.join(', ')}</p>
+    <p>User Details: {JSON.stringify(userDetails)}</p>
+    <p>Approach Comparison: {JSON.stringify(compareApproaches(1, 2, 3))}</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
+      { id: "spread", title: "Spread Operator" },
       { id: "enhanced-object-literals", title: "Enhanced Object Literals" },
       { id: "for-of", title: "For...of Loop" },
       { id: "classes", title: "Classes" },
