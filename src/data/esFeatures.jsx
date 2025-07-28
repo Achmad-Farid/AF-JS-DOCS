@@ -310,7 +310,74 @@ render(
           </>
         ),
       },
-      { id: "default-parameters", title: "Default Parameters" },
+      {
+        id: "default-parameters",
+        title: "Default Parameters",
+        content: () => (
+          <>
+            <p>
+              Default parameters allow you to set default values for function parameters when they are <code>undefined</code> or not provided.
+              <br />
+              This feature helps make functions more robust and reduces the need for parameter validation code.
+            </p>
+
+            <LiveProvider
+              code={`// Basic default parameters
+function greet(name = 'Guest') {
+  return \`Hello, \${name}!\`;
+}
+
+// Multiple default parameters
+function createUser(name, age = 18, isAdmin = false) {
+  return { name, age, isAdmin };
+}
+
+// Default parameters with expressions
+function getCurrentYear(offset = 0) {
+  return new Date().getFullYear() + offset;
+}
+
+// Default parameters can reference previous parameters
+function createPoint(x = 0, y = x * 2) {
+  return { x, y };
+}
+
+// Default parameters with destructuring
+function drawCircle({ radius = 1, color = 'red', x = 0, y = 0 } = {}) {
+  return \`Drawing \${color} circle with radius \${radius} at (\${x},\${y})\`;
+}
+
+// Default parameters vs undefined
+function example(a = 10, b = 20) {
+  return a + b;
+}
+
+render(
+  <div>
+    <p>Basic: {greet()} vs {greet('Alice')}</p>
+    <p>Multiple: {JSON.stringify(createUser('Bob'))}</p>
+    <p>Expression: Next year will be {getCurrentYear(1)}</p>
+    <p>Parameter reference: {JSON.stringify(createPoint(5))}</p>
+    <p>Destructuring: {drawCircle({ radius: 5 })}</p>
+    <p>Undefined behavior: {example(undefined, 5)} (uses default for a)</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
       { id: "rest-spread", title: "Rest & Spread Operator" },
       { id: "enhanced-object-literals", title: "Enhanced Object Literals" },
       { id: "for-of", title: "For...of Loop" },
