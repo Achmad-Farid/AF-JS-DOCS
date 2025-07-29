@@ -632,7 +632,115 @@ render(
           </>
         ),
       },
-      { id: "for-of", title: "For...of Loop" },
+      {
+        id: "for-of",
+        title: "For...of Loop",
+        content: () => (
+          <>
+            <p>
+              The <code>for...of</code> loop creates a loop iterating over iterable objects (arrays, strings, maps, sets, etc.), providing a cleaner syntax compared to traditional <code>for</code> loops.
+            </p>
+
+            <LiveProvider
+              code={`// Basic array iteration
+const fruits = ['apple', 'banana', 'orange'];
+for (const fruit of fruits) {
+  console.log(fruit);
+}
+
+// String iteration
+const message = 'Hello';
+for (const char of message) {
+  console.log(char);
+}
+
+// Set iteration
+const uniqueNumbers = new Set([1, 2, 2, 3, 4]);
+for (const num of uniqueNumbers) {
+  console.log(num);
+}
+
+// Map iteration
+const userMap = new Map([
+  ['name', 'Alice'],
+  ['age', 25]
+]);
+for (const [key, value] of userMap) {
+  console.log(\`\${key}: \${value}\`);
+}
+
+// NodeList iteration (DOM elements)
+const elements = document.querySelectorAll('div');
+for (const element of elements) {
+  console.log(element);
+}
+
+// Arguments object iteration
+function sumAll() {
+  let total = 0;
+  for (const num of arguments) {
+    total += num;
+  }
+  return total;
+}
+
+// Custom iterable object
+const countToFive = {
+  *[Symbol.iterator]() {
+    for (let i = 1; i <= 5; i++) {
+      yield i;
+    }
+  }
+};
+for (const num of countToFive) {
+  console.log(num);
+}
+
+// Comparison with for...in and forEach
+const arr = [10, 20, 30];
+arr.foo = 'bar';
+
+// for...in (iterates over enumerable properties)
+let forInResult = [];
+for (const key in arr) {
+  forInResult.push(key);
+}
+
+// forEach (only array elements)
+let forEachResult = [];
+arr.forEach(item => forEachResult.push(item));
+
+// for...of (only iterable values)
+let forOfResult = [];
+for (const item of arr) {
+  forOfResult.push(item);
+}
+
+render(
+  <div>
+    <h4>Iteration Results:</h4>
+    <p>for...in (includes properties): {forInResult.join(', ')}</p>
+    <p>forEach (only elements): {forEachResult.join(', ')}</p>
+    <p>for...of (only iterable values): {forOfResult.join(', ')}</p>
+    <p>Sum of 1, 2, 3: {sumAll(1, 2, 3)}</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
       { id: "classes", title: "Classes" },
       { id: "promises", title: "Promises" },
       { id: "modules", title: "Modules (Import / Export)" },
