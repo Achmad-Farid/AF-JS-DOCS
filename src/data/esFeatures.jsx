@@ -452,7 +452,87 @@ render(
           </>
         ),
       },
-      { id: "spread", title: "Spread Operator" },
+      {
+        id: "spread",
+        title: "Spread Operator",
+        content: () => (
+          <>
+            <p>
+              The spread operator (<code>...</code>) allows an iterable (like an array or object) to be expanded in places where multiple elements/arguments are expected.
+              <br />
+              It's essentially the opposite of the rest operator - while rest collects, spread spreads out.
+            </p>
+
+            <LiveProvider
+              code={`// Spread with arrays
+const fruits = ['apple', 'banana'];
+const moreFruits = ['orange', ...fruits, 'mango'];
+
+// Copying arrays (shallow copy)
+const originalArray = [1, 2, 3];
+const copiedArray = [...originalArray];
+
+// Concatenating arrays
+const veggies = ['carrot', 'potato'];
+const food = [...fruits, ...veggies];
+
+// Spread with function arguments
+const numbers = [5, 10, 15];
+Math.max(...numbers); // Equivalent to Math.max(5, 10, 15)
+
+// Spread with objects (ES2018+)
+const user = { name: 'Alice', age: 25 };
+const updatedUser = { ...user, age: 26, city: 'New York' };
+
+// Merging objects
+const defaults = { theme: 'light', fontSize: 16 };
+const userPrefs = { fontSize: 18 };
+const merged = { ...defaults, ...userPrefs };
+
+// Spread with strings
+const greeting = "Hello";
+const chars = [...greeting]; // ['H', 'e', 'l', 'l', 'o']
+
+// Practical use cases
+function addToCart(item, ...extras) {
+  return { item, extras };
+}
+const cartItem = addToCart('shirt', ...['large', 'blue']);
+
+// Important note about shallow copying
+const nestedObj = { a: { b: 1 } };
+const shallowCopy = { ...nestedObj };
+shallowCopy.a.b = 2; // Affects both objects
+
+render(
+  <div>
+    <p>More Fruits: {moreFruits.join(', ')}</p>
+    <p>Copied Array: {copiedArray.join(', ')}</p>
+    <p>All Food: {food.join(', ')}</p>
+    <p>Max Number: {Math.max(...numbers)}</p>
+    <p>Updated User: {JSON.stringify(updatedUser)}</p>
+    <p>Merged Settings: {JSON.stringify(merged)}</p>
+    <p>String Spread: {chars.join('-')}</p>
+    <p>Cart Item: {JSON.stringify(cartItem)}</p>
+    <p>Shallow Copy Warning: nestedObj.a.b = {nestedObj.a.b}</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
       { id: "enhanced-object-literals", title: "Enhanced Object Literals" },
       { id: "for-of", title: "For...of Loop" },
       { id: "classes", title: "Classes" },
