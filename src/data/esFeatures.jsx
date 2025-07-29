@@ -533,7 +533,105 @@ render(
           </>
         ),
       },
-      { id: "enhanced-object-literals", title: "Enhanced Object Literals" },
+      {
+        id: "enhanced-object-literals",
+        title: "Enhanced Object Literals",
+        content: () => (
+          <>
+            <p>Enhanced Object Literals introduce several syntactic improvements for object creation in ES6+, making object declarations more concise and expressive.</p>
+
+            <LiveProvider
+              code={`// Property shorthand (same name)
+const name = 'Alice';
+const age = 25;
+const user = { name, age }; // Instead of { name: name, age: age }
+
+// Method shorthand
+const calculator = {
+  add(a, b) {  // Instead of add: function(a, b)
+    return a + b;
+  },
+  multiply(a, b) {
+    return a * b;
+  }
+};
+
+// Computed property names
+const dynamicKey = 'email';
+const contact = {
+  [dynamicKey]: 'alice@example.com',
+  ['user_' + age]: 'Special user' // Dynamic property name
+};
+
+// Object spread (ES2018)
+const defaults = { theme: 'light', fontSize: 16 };
+const userSettings = { ...defaults, fontSize: 18 };
+
+// Prototype setting
+const person = {
+  greet() {
+    return \`Hello, \${this.name}!\`;
+  }
+};
+const alice = {
+  __proto__: person,  // Sets prototype
+  name: 'Alice'
+};
+
+// super() calls in methods
+const parent = {
+  greet() {
+    return 'Hello from parent!';
+  }
+};
+const child = {
+  __proto__: parent,
+  greet() {
+    return super.greet() + ' And from child!';
+  }
+};
+
+// Practical example combining features
+function createUser(id, name, email) {
+  return {
+    id,
+    name,
+    email,
+    createdAt: new Date(),
+    getProfile() {
+      return \`\${this.name} (\${this.email})\`;
+    },
+    ['perm_' + id]: 'read-write'
+  };
+}
+
+render(
+  <div>
+    <p>User: {JSON.stringify(user)}</p>
+    <p>Calculator: 2 + 3 = {calculator.add(2, 3)}</p>
+    <p>Contact: {JSON.stringify(contact)}</p>
+    <p>Settings: {JSON.stringify(userSettings)}</p>
+    <p>Prototype: {alice.greet()}</p>
+    <p>Inheritance: {child.greet()}</p>
+    <p>Created User: {JSON.stringify(createUser(101, 'Bob', 'bob@example.com'))}</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+          </>
+        ),
+      },
       { id: "for-of", title: "For...of Loop" },
       { id: "classes", title: "Classes" },
       { id: "promises", title: "Promises" },
