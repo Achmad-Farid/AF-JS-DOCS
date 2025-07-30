@@ -741,7 +741,149 @@ render(
           </>
         ),
       },
-      { id: "classes", title: "Classes" },
+      {
+        id: "classes",
+        title: "Classes",
+        content: () => (
+          <>
+            <p>ES6 Classes provide syntactic sugar over JavaScript's prototype-based inheritance, offering a cleaner syntax for creating objects and dealing with inheritance.</p>
+
+            <LiveProvider
+              code={`// Basic class syntax
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  // Instance method
+  greet() {
+    return \`Hello, my name is \${this.name}!\`;
+  }
+
+  // Static method
+  static compareAges(person1, person2) {
+    return person1.age - person2.age;
+  }
+}
+
+// Inheritance
+class Student extends Person {
+  constructor(name, age, major) {
+    super(name, age); // Call parent constructor
+    this.major = major;
+  }
+
+  // Method overriding
+  greet() {
+    return \`\${super.greet()} I'm studying \${this.major}.\`;
+  }
+
+  // New method
+  study() {
+    return \`\${this.name} is studying!\`;
+  }
+}
+
+// Getters and Setters
+class Temperature {
+  constructor(celsius) {
+    this.celsius = celsius;
+  }
+
+  get fahrenheit() {
+    return this.celsius * 1.8 + 32;
+  }
+
+  set fahrenheit(value) {
+    this.celsius = (value - 32) / 1.8;
+  }
+}
+
+// BankAccount without private fields (works in all environments)
+class BankAccount {
+  constructor() {
+    this.balance = 0;
+  }
+
+  deposit(amount) {
+    if (amount > 0) {
+      this.balance += amount;
+    }
+  }
+}
+
+// Practical example
+class Rectangle {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  get area() {
+    return this.width * this.height;
+  }
+
+  static createSquare(side) {
+    return new Rectangle(side, side);
+  }
+}
+
+// Using the classes
+const alice = new Person('Alice', 25);
+const bob = new Student('Bob', 20, 'Computer Science');
+const temp = new Temperature(25);
+const account = new BankAccount();
+account.deposit(100);
+const rect = new Rectangle(5, 10);
+const square = Rectangle.createSquare(5);
+
+render(
+  <div>
+    <h4>Class Examples:</h4>
+    <p>Person: {alice.greet()}</p>
+    <p>Student: {bob.greet()}</p>
+    <p>Temperature: {temp.celsius}°C = {temp.fahrenheit}°F</p>
+    <p>Rectangle Area: {rect.area}</p>
+    <p>Square Area: {square.area}</p>
+    <p>Age Comparison: {Person.compareAges(alice, bob)}</p>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Concepts:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <code>constructor</code> for initialization
+                </li>
+                <li>
+                  <code>extends</code> for inheritance
+                </li>
+                <li>
+                  <code>super</code> to call parent methods
+                </li>
+                <li>Static methods called on the class itself</li>
+                <li>Getters/setters for computed properties</li>
+                <li>Method shorthand syntax</li>
+                <li className="text-gray-500">Note: Private fields (#) work in modern browsers but may not work in some live editors</li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
       { id: "promises", title: "Promises" },
       { id: "modules", title: "Modules (Import / Export)" },
       { id: "symbols", title: "Symbols" },
