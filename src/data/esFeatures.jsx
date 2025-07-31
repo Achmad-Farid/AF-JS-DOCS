@@ -884,7 +884,152 @@ render(
           </>
         ),
       },
-      { id: "promises", title: "Promises" },
+      {
+        id: "promises",
+        title: "Promises",
+        content: () => (
+          <>
+            <p>
+              Promises represent the eventual completion (or failure) of an asynchronous operation and its resulting value.
+              <br />
+              They provide a cleaner alternative to callback-based asynchronous programming.
+            </p>
+
+            <LiveProvider
+              code={`// Basic Promise creation
+const fetchData = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    const success = Math.random() > 0.3;
+    success ? resolve('Data fetched successfully!') : reject('Error: Failed to fetch data');
+  }, 1000);
+});
+
+// Consuming Promises with .then() and .catch()
+fetchData
+  .then(result => {
+    console.log(result);
+    return 'Processed: ' + result;
+  })
+  .then(processedResult => {
+    console.log(processedResult);
+  })
+  .catch(error => {
+    console.error(error);
+  })
+  .finally(() => {
+    console.log('Operation completed (success or failure)');
+  });
+
+// Promise.all() - Wait for all promises to resolve
+const promise1 = Promise.resolve('First');
+const promise2 = new Promise(resolve => setTimeout(() => resolve('Second'), 500));
+const promise3 = fetch('https://jsonplaceholder.typicode.com/todos/1')
+  .then(response => response.json());
+
+Promise.all([promise1, promise2, promise3])
+  .then(values => {
+    console.log('All promises resolved:', values);
+  })
+  .catch(error => {
+    console.error('One promise rejected:', error);
+  });
+
+// Promise.race() - Get first settled promise
+const timeout = new Promise((_, reject) => 
+  setTimeout(() => reject('Request timed out'), 2000));
+const apiCall = fetch('https://jsonplaceholder.typicode.com/users/1')
+  .then(response => response.json());
+
+Promise.race([apiCall, timeout])
+  .then(data => {
+    console.log('First promise resolved:', data);
+  })
+  .catch(error => {
+    console.error('First promise rejected:', error);
+  });
+
+// Async/await syntax (built on Promises)
+async function getUserData() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
+    const data = await response.json();
+    console.log('User data:', data);
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch user:', error);
+    throw error;
+  }
+}
+
+// Practical example: Sequential vs parallel execution
+async function loadResources() {
+  // Sequential
+  const start = Date.now();
+  const res1 = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+  const res2 = await fetch('https://jsonplaceholder.typicode.com/comments/1');
+  console.log('Sequential time:', Date.now() - start);
+  
+  // Parallel
+  const parallelStart = Date.now();
+  const [post, comment] = await Promise.all([
+    fetch('https://jsonplaceholder.typicode.com/posts/2'),
+    fetch('https://jsonplaceholder.typicode.com/comments/2')
+  ]);
+  console.log('Parallel time:', Date.now() - parallelStart);
+}
+
+render(
+  <div>
+    <p>Check the browser console for Promise examples output</p>
+    <button 
+      onClick={() => getUserData()}
+      className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+    >
+      Fetch User Data
+    </button>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+                <div className="text-red-600 p-2">
+                  <LiveError />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Concepts:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Promise states: <code>pending</code>, <code>fulfilled</code>, <code>rejected</code>
+                </li>
+                <li>
+                  <code>.then()</code> for success cases, <code>.catch()</code> for errors
+                </li>
+                <li>
+                  <code>.finally()</code> for cleanup regardless of outcome
+                </li>
+                <li>
+                  <code>Promise.all()</code> for parallel execution
+                </li>
+                <li>
+                  <code>Promise.race()</code> for timeout patterns
+                </li>
+                <li>Async/await syntactic sugar over Promises</li>
+                <li>
+                  Error handling with <code>try/catch</code>
+                </li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
       { id: "modules", title: "Modules (Import / Export)" },
       { id: "symbols", title: "Symbols" },
     ],
