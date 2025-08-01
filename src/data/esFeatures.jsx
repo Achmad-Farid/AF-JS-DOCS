@@ -1030,7 +1030,94 @@ render(
           </>
         ),
       },
-      { id: "modules", title: "Modules (Import / Export)" },
+      {
+        id: "modules",
+        title: "Modules (Import / Export)",
+        content: () => (
+          <>
+            <p>ES6 Modules let you split your code into separate files that can import and export functionality.</p>
+
+            <LiveProvider
+              code={`// math.js - Exporting
+export const PI = 3.14;
+
+export function square(x) {
+  return x * x;
+}
+
+export default function add(a, b) {
+  return a + b;
+}
+
+// app.js - Importing
+import add, { PI, square } from './math';
+
+console.log(PI);           // 3.14
+console.log(square(5));    // 25
+console.log(add(2, 3));    // 5
+
+// Alternative import styles
+import * as math from './math';
+console.log(math.PI);      // 3.14
+
+// React component example
+// Button.js
+import React from 'react';
+
+export default function Button({ text }) {
+  return <button>{text}</button>;
+}
+
+// App.js
+import Button from './Button';
+
+function App() {
+  return <Button text="Click me" />;
+}
+
+render(
+  <div>
+    <h4>Module Examples:</h4>
+    <p>Check your browser console for output</p>
+    <div className="mt-4">
+      <App />
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Simple Rules:</h4>
+              <ol className="list-decimal pl-5 space-y-2">
+                <li>
+                  Use <code>export</code> to make things available
+                </li>
+                <li>
+                  Use <code>import</code> to use things from other files
+                </li>
+                <li>
+                  One <code>export default</code> per file (import without curly braces)
+                </li>
+                <li>
+                  Multiple regular <code>exports</code> per file (import with curly braces)
+                </li>
+                <li>
+                  File extensions (<code>.js</code>) are usually required
+                </li>
+              </ol>
+            </div>
+          </>
+        ),
+      },
       { id: "symbols", title: "Symbols" },
     ],
   },
