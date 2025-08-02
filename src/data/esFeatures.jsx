@@ -1118,7 +1118,103 @@ render(
           </>
         ),
       },
-      { id: "symbols", title: "Symbols" },
+      {
+        id: "symbols",
+        title: "Symbols",
+        content: () => (
+          <>
+            <p>
+              Symbols are unique and immutable values used mainly as object property identifiers.
+              <br />
+              They help prevent naming collisions in objects.
+            </p>
+
+            <LiveProvider
+              code={`// Creating symbols
+const id = Symbol('user_id');
+const id2 = Symbol('user_id'); // Different from id
+
+// Using as object property
+const user = {
+  name: 'Alice',
+  [id]: 12345  // Symbol as key
+};
+
+console.log(user[id]); // 12345
+console.log(user.id);  // undefined (can't access with dot notation)
+
+// Symbols are unique
+console.log(id === id2); // false (even with same description)
+
+// Well-known symbols
+const numbers = [1, 2, 3];
+numbers[Symbol.iterator] = function*() {
+  for (let i = this.length - 1; i >= 0; i--) {
+    yield this[i];
+  }
+};
+
+console.log([...numbers]); // [3, 2, 1] (reversed iteration)
+
+// Practical example: Preventing property conflicts
+const LOG_LEVEL = {
+  DEBUG: Symbol('debug'),
+  INFO: Symbol('info'),
+  WARN: Symbol('warn')
+};
+
+function log(message, level = LOG_LEVEL.INFO) {
+  const prefix = level === LOG_LEVEL.DEBUG ? 'DEBUG: ' :
+                 level === LOG_LEVEL.WARN ? 'WARNING: ' : '';
+  console.log(prefix + message);
+}
+
+log('This is info'); // Normal log
+log('Debugging', LOG_LEVEL.DEBUG); // Debug log
+log('Warning!', LOG_LEVEL.WARN); // Warning log
+
+render(
+  <div>
+    <h4>Symbol Examples:</h4>
+    <p>Check your browser console for output</p>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>User ID Symbol: {user[id].toString()}</p>
+      <p>Reversed Array: {JSON.stringify([...numbers])}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Points:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Every Symbol() call creates a <strong>unique</strong> value
+                </li>
+                <li>
+                  Symbols are <strong>not enumerable</strong> in for...in loops
+                </li>
+                <li>
+                  Used for <strong>meta-programming</strong> (like Symbol.iterator)
+                </li>
+                <li>
+                  Great for <strong>constants</strong> that need uniqueness
+                </li>
+                <li>Description parameter is just for debugging</li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
     ],
   },
   es2016: {
