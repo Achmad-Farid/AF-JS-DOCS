@@ -1220,7 +1220,123 @@ render(
   es2016: {
     name: "ES2016 (ES7)",
     features: [
-      { id: "array-includes", title: "Array.prototype.includes()" },
+      {
+        id: "array-includes",
+        title: "Array.prototype.includes()",
+        content: () => (
+          <>
+            <p>
+              The <code>includes()</code> method checks if an array contains a specific value, returning <code>true</code> or <code>false</code>.
+              <br />
+              It's a simpler alternative to <code>indexOf()</code> for existence checks.
+            </p>
+
+            <LiveProvider
+              code={`// Basic usage
+const fruits = ['apple', 'banana', 'orange'];
+
+console.log(fruits.includes('banana')); // true
+console.log(fruits.includes('grape'));  // false
+
+// Case sensitivity
+console.log(fruits.includes('Apple'));  // false (case matters)
+
+// FromIndex parameter
+const numbers = [1, 2, 3, 4, 5];
+
+console.log(numbers.includes(2, 2));    // false (search starts at index 2)
+console.log(numbers.includes(2, 1));    // true
+
+// NaN handling (unlike indexOf)
+const mixed = [1, NaN, 3];
+console.log(mixed.includes(NaN));       // true
+console.log(mixed.indexOf(NaN));        // -1 (can't find NaN)
+
+// Practical examples
+const cart = ['shirt', 'pants', 'shoes'];
+
+function isInCart(item) {
+  return cart.includes(item.toLowerCase());
+}
+
+const userRoles = ['admin', 'editor', 'viewer'];
+
+function hasPermission(role) {
+  return userRoles.includes(role);
+}
+
+render(
+  <div>
+    <h4>includes() Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Fruits has 'banana': {fruits.includes('banana').toString()}</p>
+      <p>Numbers has 2 after index 1: {numbers.includes(2, 1).toString()}</p>
+      <p>Array can find NaN: {mixed.includes(NaN).toString()}</p>
+      <p>Is 'Shirt' in cart? {isInCart('Shirt').toString()}</p>
+      <p>Is 'admin' in roles? {hasPermission('admin').toString()}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">When to Use includes():</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  When you only need to <strong>check existence</strong> (not position)
+                </li>
+                <li>
+                  When checking for <strong>NaN</strong> in an array
+                </li>
+                <li>
+                  For <strong>readability</strong> over indexOf()
+                </li>
+                <li>
+                  With <strong>case-sensitive</strong> string searches
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">Comparison with indexOf():</h4>
+              <div className="bg-white p-3 rounded border">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left p-2">Method</th>
+                      <th className="text-left p-2">Returns</th>
+                      <th className="text-left p-2">Finds NaN?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="p-2">
+                        <code>includes()</code>
+                      </td>
+                      <td className="p-2">true/false</td>
+                      <td className="p-2">✅ Yes</td>
+                    </tr>
+                    <tr>
+                      <td className="p-2">
+                        <code>indexOf()</code>
+                      </td>
+                      <td className="p-2">index or -1</td>
+                      <td className="p-2">❌ No</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        ),
+      },
       { id: "exponentiation-operator", title: "Exponentiation Operator (**)" },
     ],
   },
