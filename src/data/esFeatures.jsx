@@ -1337,7 +1337,112 @@ render(
           </>
         ),
       },
-      { id: "exponentiation-operator", title: "Exponentiation Operator (**)" },
+      {
+        id: "exponentiation-operator",
+        title: "Exponentiation Operator (**)",
+        content: () => (
+          <>
+            <p>
+              The exponentiation operator (<code>**</code>) raises a number to a power, replacing <code>Math.pow()</code> with cleaner syntax.
+            </p>
+
+            <LiveProvider
+              code={`// Basic usage
+console.log(2 ** 3);  // 8 (2 to the 3rd power)
+console.log(3 ** 2);  // 9 (3 squared)
+
+// With variables
+const base = 5;
+const exponent = 4;
+console.log(base ** exponent); // 625
+
+// Fractional exponents
+console.log(16 ** 0.5); // 4 (square root)
+console.log(8 ** (1/3)); // 2 (cube root)
+
+// Negative exponents
+console.log(2 ** -3); // 0.125 (1 / (2³))
+
+// Assignment version
+let num = 2;
+num **= 4; // Same as num = num ** 4
+console.log(num); // 16
+
+// Comparison with Math.pow()
+console.log(2 ** 3 === Math.pow(2, 3)); // true
+
+// Practical examples
+function calculateCompound(principal, rate, years) {
+  return principal * (1 + rate) ** years;
+}
+
+function getCircleArea(radius) {
+  return Math.PI * radius ** 2;
+}
+
+render(
+  <div>
+    <h4>Exponentiation Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>2<sup>3</sup> = {2 ** 3}</p>
+      <p>5<sup>4</sup> = {base ** exponent}</p>
+      <p>√16 = {16 ** 0.5}</p>
+      <p>Area of circle (r=5): {getCircleArea(5).toFixed(2)}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Features:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Cleaner syntax than <code>Math.pow(base, exponent)</code>
+                </li>
+                <li>Works with integers, fractions, and negative numbers</li>
+                <li>
+                  Has an assignment version (<code>**=</code>)
+                </li>
+                <li>
+                  Right-associative: <code>2 ** 3 ** 2</code> equals <code>2 ** (3 ** 2)</code>
+                </li>
+                <li>
+                  Returns <code>NaN</code> for invalid operations like <code>(-2) ** 0.5</code>
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">When to Use:</h4>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-white p-3 rounded border">
+                  <span className="font-mono bg-green-100 px-2 py-1 rounded">**</span>
+                  <ul className="mt-2 pl-5 list-disc text-sm">
+                    <li>Simple power operations</li>
+                    <li>Readable mathematical code</li>
+                    <li>When writing formulas</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <span className="font-mono bg-blue-100 px-2 py-1 rounded">Math.pow()</span>
+                  <ul className="mt-2 pl-5 list-disc text-sm">
+                    <li>Legacy browser support</li>
+                    <li>When exponent is variable</li>
+                    <li>Very large exponents</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+      },
     ],
   },
   es2017: {
