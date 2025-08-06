@@ -1448,7 +1448,98 @@ render(
   es2017: {
     name: "ES2017 (ES8)",
     features: [
-      { id: "async-await", title: "async / await" },
+      {
+        id: "async-await",
+        title: "async / await",
+        content: () => (
+          <>
+            <p>
+              <code>async/await</code> provides a cleaner way to work with Promises, making asynchronous code look and behave more like synchronous code.
+            </p>
+
+            <LiveProvider
+              code={`// Basic async function
+async function fetchData() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+}
+
+// Using with arrow functions
+const fetchUser = async (userId) => {
+  const response = await fetch(\`https://jsonplaceholder.typicode.com/users/\${userId}\`);
+  return await response.json();
+};
+
+// Practical example with loading state
+async function loadData() {
+  const output = document.getElementById('output-area');
+  output.innerHTML = '<p>Loading...</p>';
+  
+  try {
+    const todo = await fetchData();
+    const user = await fetchUser(todo.userId);
+    
+    output.innerHTML = \`
+      <h3>\${user.name}</h3>
+      <p>\${todo.title}</p>
+      <p>Completed: \${todo.completed ? '✅' : '❌'}</p>
+    \`;
+  } catch (error) {
+    output.innerHTML = '<p style="color: red;">Failed to load data</p>';
+  }
+}
+
+render(
+  <div>
+    <h4>Async/Await Examples:</h4>
+    <button 
+      onClick={loadData}
+      className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+    >
+      Load Data
+    </button>
+    <div className="mt-4 p-4 bg-gray-100 rounded" id="output-area">
+      {/* Output will appear here */}
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Points:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <code>async</code> makes a function return a Promise
+                </li>
+                <li>
+                  <code>await</code> waits for a Promise to resolve
+                </li>
+                <li>
+                  Always use <code>try/catch</code> for error handling
+                </li>
+                <li>
+                  Much cleaner than chaining <code>.then()</code> calls
+                </li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
       { id: "object-values", title: "Object.values()" },
       { id: "object-entries", title: "Object.entries()" },
       { id: "string-padding", title: "String padding (padStart, padEnd)" },
