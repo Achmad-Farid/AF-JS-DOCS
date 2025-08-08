@@ -1540,7 +1540,128 @@ render(
           </>
         ),
       },
-      { id: "object-values", title: "Object.values()" },
+      {
+        id: "object-values",
+        title: "Object.values()",
+        content: () => (
+          <>
+            <p>
+              <code>Object.values()</code> returns an array of a given object's own enumerable property values, in the same order as a <code>for...in</code> loop would provide.
+            </p>
+
+            <LiveProvider
+              code={`// Basic usage
+const person = {
+  name: 'Alice',
+  age: 25,
+  profession: 'Developer'
+};
+
+const values = Object.values(person);
+console.log(values); // ['Alice', 25, 'Developer']
+
+// With different value types
+const mixedObj = {
+  string: 'hello',
+  number: 42,
+  boolean: true,
+  array: [1, 2, 3],
+  nested: { a: 1 }
+};
+console.log(Object.values(mixedObj)); 
+// ['hello', 42, true, [1, 2, 3], {a: 1}]
+
+// Practical examples
+function getTotalCost(items) {
+  return Object.values(items).reduce((total, price) => total + price, 0);
+}
+
+const shoppingCart = {
+  laptop: 999,
+  mouse: 25,
+  keyboard: 45
+};
+console.log('Total:', getTotalCost(shoppingCart)); // 1069
+
+// With class instances
+class User {
+  constructor(name, role) {
+    this.name = name;
+    this.role = role;
+  }
+}
+const admin = new User('Bob', 'Admin');
+console.log(Object.values(admin)); // ['Bob', 'Admin']
+
+// Order of values
+const orderedObj = {
+  10: 'ten',
+  1: 'one',
+  2: 'two'
+};
+console.log(Object.values(orderedObj)); // ['one', 'two', 'ten']
+
+render(
+  <div>
+    <h4>Object.values() Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Person values: {JSON.stringify(Object.values(person))}</p>
+      <p>Mixed object values: {JSON.stringify(Object.values(mixedObj))}</p>
+      <p>User instance values: {JSON.stringify(Object.values(admin))}</p>
+      <p>Number-keyed object order: {JSON.stringify(Object.values(orderedObj))}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Features:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Returns <strong>only own properties</strong> (not inherited ones)
+                </li>
+                <li>
+                  Returns values in <strong>same order</strong> as <code>for...in</code>
+                </li>
+                <li>
+                  Works with <strong>all value types</strong> (primitives, objects, arrays)
+                </li>
+                <li>
+                  Ignores <strong>non-enumerable</strong> properties
+                </li>
+                <li>
+                  Useful for <strong>object transformation</strong> and calculations
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">Comparison:</h4>
+              <div className="grid grid-cols-3 gap-2 text-sm">
+                <div className="bg-white p-3 rounded border">
+                  <code className="font-bold">Object.values()</code>
+                  <p>Array of values</p>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <code className="font-bold">Object.keys()</code>
+                  <p>Array of keys</p>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <code className="font-bold">Object.entries()</code>
+                  <p>Array of [key, value] pairs</p>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+      },
       { id: "object-entries", title: "Object.entries()" },
       { id: "string-padding", title: "String padding (padStart, padEnd)" },
       { id: "trailing-commas", title: "Trailing commas in function parameter lists" },
