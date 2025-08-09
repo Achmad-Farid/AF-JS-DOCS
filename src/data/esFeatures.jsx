@@ -1662,7 +1662,146 @@ render(
           </>
         ),
       },
-      { id: "object-entries", title: "Object.entries()" },
+      {
+        id: "object-entries",
+        title: "Object.entries()",
+        content: () => (
+          <>
+            <p>
+              <code>Object.entries()</code> returns an array of a given object's own enumerable string-keyed property <code>[key, value]</code> pairs, in the same order as <code>for...in</code> loops.
+            </p>
+
+            <LiveProvider
+              code={`// Basic usage
+const person = {
+  name: 'Alice',
+  age: 25,
+  profession: 'Developer'
+};
+
+const entries = Object.entries(person);
+console.log(entries);
+// [ ['name', 'Alice'], ['age', 25], ['profession', 'Developer'] ]
+
+// Practical examples
+function logObject(obj) {
+  for (const [key, value] of Object.entries(obj)) {
+    console.log(\`\${key}: \${value}\`);
+  }
+}
+
+// Convert object to Map
+const personMap = new Map(Object.entries(person));
+
+// Calculate total from string values
+const priceStrings = {
+  item1: '10.99',
+  item2: '5.50',
+  item3: '7.25'
+};
+
+const total = Object.entries(priceStrings)
+  .reduce((sum, [key, value]) => sum + parseFloat(value), 0);
+
+// Transform object
+const user = {
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 30
+};
+
+const transformed = Object.entries(user).map(([key, value]) => ({
+  field: key,
+  value,
+  type: typeof value
+}));
+
+render(
+  <div>
+    <h4>Object.entries() Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Person entries: {JSON.stringify(Object.entries(person))}</p>
+      <p>Map size: {personMap.size}</p>
+      <p>Transformed user: {JSON.stringify(transformed)}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Common Use Cases:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <strong>Object iteration</strong> with <code>for...of</code>
+                </li>
+                <li>
+                  <strong>Converting objects to Maps</strong>
+                </li>
+                <li>
+                  <strong>Data transformation</strong> (map/filter/reduce)
+                </li>
+                <li>
+                  <strong>Object inspection</strong> and logging
+                </li>
+                <li>
+                  <strong>Form data processing</strong>
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">Comparison Table:</h4>
+              <div className="bg-white p-3 rounded border">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="p-2 text-left">Method</th>
+                      <th className="p-2 text-left">Returns</th>
+                      <th className="p-2 text-left">Example Output</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="p-2">
+                        <code>Object.keys()</code>
+                      </td>
+                      <td className="p-2">Array of keys</td>
+                      <td className="p-2">
+                        <code>['name', 'age']</code>
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="p-2">
+                        <code>Object.values()</code>
+                      </td>
+                      <td className="p-2">Array of values</td>
+                      <td className="p-2">
+                        <code>['Alice', 25]</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-2">
+                        <code>Object.entries()</code>
+                      </td>
+                      <td className="p-2">Array of [key, value] pairs</td>
+                      <td className="p-2">
+                        <code>[['name', 'Alice'], ['age', 25]]</code>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        ),
+      },
       { id: "string-padding", title: "String padding (padStart, padEnd)" },
       { id: "trailing-commas", title: "Trailing commas in function parameter lists" },
     ],
