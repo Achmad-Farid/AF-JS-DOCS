@@ -1802,7 +1802,87 @@ render(
           </>
         ),
       },
-      { id: "string-padding", title: "String padding (padStart, padEnd)" },
+      {
+        id: "string-padding",
+        title: "String padding (padStart, padEnd)",
+        content: () => (
+          <>
+            <p>
+              <code>padStart()</code> and <code>padEnd()</code> add padding to strings until they reach the specified length, making them useful for formatting text, numbers, and IDs.
+            </p>
+
+            <LiveProvider
+              code={`// Display output in render function
+const numbers = [1, 12, 123, 1234];
+const formattedNumbers = numbers.map(n => n.toString().padStart(4, ' '));
+
+const products = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 25 },
+  { name: 'Keyboard', price: 45 }
+];
+
+function generateId(num) {
+  return \`ID-\${num.toString().padStart(5, '0')}\`;
+}
+
+function formatProductTable() {
+  return products.map(p => 
+    \`\${p.name.padEnd(10, '.')} $\${p.price.toString().padStart(6)}\`
+  ).join('\\n');
+}
+
+render(
+  <div>
+    <h4>String Padding Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Number padding: {"5".padStart(3, '0')}</p>
+      <p>Text padding: {"Hi".padEnd(5, '!')}</p>
+      <p>Generated ID: {generateId(42)}</p>
+      <p>Number formatting: {formattedNumbers.join(', ')}</p>
+      <pre>Product Table:\n{formatProductTable()}</pre>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">When to Use:</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold mb-1">
+                    <code>padStart(length, padString)</code>
+                  </h5>
+                  <ul className="list-disc pl-5 text-sm space-y-1">
+                    <li>Zero-padding numbers</li>
+                    <li>Right-aligning text</li>
+                    <li>Fixed-length IDs</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold mb-1">
+                    <code>padEnd(length, padString)</code>
+                  </h5>
+                  <ul className="list-disc pl-5 text-sm space-y-1">
+                    <li>Adding trailing characters</li>
+                    <li>Left-aligning text</li>
+                    <li>Creating uniform column widths</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+      },
       { id: "trailing-commas", title: "Trailing commas in function parameter lists" },
     ],
   },
