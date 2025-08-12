@@ -1883,7 +1883,119 @@ render(
           </>
         ),
       },
-      { id: "trailing-commas", title: "Trailing commas in function parameter lists" },
+      {
+        id: "trailing-commas",
+        title: "Trailing commas in function parameter lists",
+        content: () => (
+          <>
+            <p>Trailing commas in function parameter lists allow you to end parameter lists with a comma, making code version control cleaner and parameter additions easier.</p>
+
+            <LiveProvider
+              code={`// Valid in function declarations
+function example(
+  param1,
+  param2, // ← Trailing comma
+) {
+  return param1 + param2;
+}
+
+// Also valid in arrow functions
+const sum = (
+  a,
+  b, // ← Trailing comma
+) => a + b;
+
+// Works in method definitions
+const obj = {
+  calculate(
+    x,
+    y, // ← Trailing comma
+  ) {
+    return x * y;
+  }
+};
+
+// Practical example - easier git diffs
+function calculateTotal(
+  subtotal,
+  taxRate = 0.05, // ← Add new parameters without modifying this line
+) {
+  return subtotal * (1 + taxRate);
+}
+
+// Before (without trailing comma)
+function oldWay(
+  a,
+  b  // ← Adding new parameter requires editing this line
+) {}
+
+// After (with trailing comma)
+function newWay(
+  a,
+  b, // ← Adding new parameter doesn't touch this line
+) {}
+
+render(
+  <div>
+    <h4>Trailing Comma Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Function result: {example(2, 3)}</p>
+      <p>Arrow function: {sum(5, 7)}</p>
+      <p>Method result: {obj.calculate(3, 4)}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Benefits:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <strong>Cleaner git diffs</strong> - Adding parameters doesn't modify previous lines
+                </li>
+                <li>
+                  <strong>Easier parameter reordering</strong> - No need to add/remove commas
+                </li>
+                <li>
+                  <strong>Consistent syntax</strong> - Matches array/object trailing comma style
+                </li>
+                <li>
+                  <strong>Better readability</strong> - Clearly shows the list could continue
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">Where It Works:</h4>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="bg-white p-3 rounded border">
+                  <span className="font-mono bg-green-100 px-2 py-1 rounded">✓ Works</span>
+                  <ul className="mt-2 pl-5 list-disc">
+                    <li>Function declarations</li>
+                    <li>Arrow functions</li>
+                    <li>Method definitions</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <span className="font-mono bg-green-100 px-2 py-1 rounded">✓ Also Works</span>
+                  <ul className="mt-2 pl-5 list-disc">
+                    <li>Function calls</li>
+                    <li>Class methods</li>
+                    <li>Destructuring parameters</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+      },
     ],
   },
   es2018: {
