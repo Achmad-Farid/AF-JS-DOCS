@@ -2001,7 +2001,121 @@ render(
   es2018: {
     name: "ES2018 (ES9)",
     features: [
-      { id: "async-iteration", title: "Asynchronous Iteration (for await...of)" },
+      {
+        id: "async-iteration",
+        title: "Asynchronous Iteration (for await...of)",
+        content: () => (
+          <>
+            <p>
+              The <code>for await...of</code> loop allows you to iterate over asynchronous iterables, making it easier to work with streams, paginated APIs, and other sequential async operations.
+            </p>
+
+            <LiveProvider
+              code={`// Using JSONPlaceholder API which actually exists
+async function* fetchPaginatedPosts() {
+  let page = 1;
+  const limit = 5; // Posts per page
+  
+  while (true) {
+    const response = await fetch(\`https://jsonplaceholder.typicode.com/posts?_page=\${page}&_limit=\${limit}\`);
+    const posts = await response.json();
+    
+    if (posts.length === 0) break;
+    
+    yield posts;
+    page++;
+  }
+}
+
+// Display posts in UI
+async function displayPosts() {
+  const outputDiv = document.getElementById('post-output');
+  outputDiv.innerHTML = '<p>Loading posts...</p>';
+  
+  try {
+    let postCount = 0;
+    for await (const posts of fetchPaginatedPosts()) {
+      posts.forEach(post => {
+        const postEl = document.createElement('div');
+        postEl.className = 'mb-4 p-3 border rounded';
+        postEl.innerHTML = \`
+          <h3 class="font-bold">\${post.title}</h3>
+          <p>\${post.body}</p>
+          <small class="text-gray-500">Post #\${post.id}</small>
+        \`;
+        outputDiv.appendChild(postEl);
+        postCount++;
+      });
+      
+      // Stop after 15 posts for demo purposes
+      if (postCount >= 15) break;
+    }
+  } catch (error) {
+    outputDiv.innerHTML = \`<p class="text-red-500">Error loading posts: \${error.message}</p>\`;
+  }
+}
+
+// Simple async generator example
+async function* asyncCounter() {
+  for (let i = 1; i <= 3; i++) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    yield i;
+  }
+}
+
+render(
+  <div>
+    <h4>Async Iteration Examples:</h4>
+    <button 
+      onClick={displayPosts}
+      className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+    >
+      Load Blog Posts
+    </button>
+    <div id="post-output" className="mt-4 p-4 bg-gray-100 rounded">
+      {/* Posts will appear here */}
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Features:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  Now uses <strong>real API endpoint</strong> (jsonplaceholder.typicode.com)
+                </li>
+                <li>
+                  Demonstrates <strong>pagination</strong> with actual data
+                </li>
+                <li>
+                  Includes <strong>proper error handling</strong>
+                </li>
+                <li>
+                  Shows <strong>UI integration</strong> with loading states
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">How This Works:</h4>
+              <ol className="list-decimal pl-5 space-y-2">
+                <li>Click "Load Blog Posts" to trigger the async iteration</li>
+                <li>Generator fetches 5 posts at a time from the API</li>
+                <li>Each batch is displayed as it arrives</li>
+                <li>Process stops after 15 posts for demonstration</li>
+              </ol>
+            </div>
+          </>
+        ),
+      },
       { id: "object-rest-spread", title: "Rest/Spread di Object" },
       { id: "promise-finally", title: "Promise.prototype.finally()" },
       { id: "regexp-improvements", title: "RegExp Improvements" },
