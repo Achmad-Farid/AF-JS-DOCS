@@ -2011,7 +2011,7 @@ render(
             </p>
 
             <LiveProvider
-              code={`// Using JSONPlaceholder API which actually exists
+              code={`
 async function* fetchPaginatedPosts() {
   let page = 1;
   const limit = 5; // Posts per page
@@ -2116,7 +2116,137 @@ render(
           </>
         ),
       },
-      { id: "object-rest-spread", title: "Rest/Spread di Object" },
+      {
+        id: "object-rest-spread",
+        title: "Rest/Spread in Object",
+        content: () => (
+          <>
+            <p>Object rest/spread allows copying, merging, and restructuring objects with clean syntax.</p>
+
+            <LiveProvider
+              code={`
+async function fetchUserData() {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch:', error);
+    return null;
+  }
+}
+
+// Object spreading with real data
+async function displayUser() {
+  const user = await fetchUserData();
+  if (!user) return;
+
+  // Remove sensitive data using rest
+  const { phone, website, ...publicProfile } = user;
+  
+  // Merge with defaults using spread
+  const profileWithDefaults = {
+    role: 'member',
+    status: 'active',
+    ...publicProfile
+  };
+
+  // Update data immutably
+  const updatedProfile = {
+    ...profileWithDefaults,
+    address: {
+      ...profileWithDefaults.address,
+      city: 'New York' // Override city
+    }
+  };
+
+  render(
+    <div className="p-4 border rounded">
+      <h3 className="text-xl font-bold">{updatedProfile.name}</h3>
+      <p>Email: {updatedProfile.email}</p>
+      <p>Company: {updatedProfile.company?.name}</p>
+      <p>Address: {updatedProfile.address?.street}, {updatedProfile.address?.city}</p>
+      <p className="mt-2 text-sm text-gray-500">
+        Filtered: {JSON.stringify({ phone, website })}
+      </p>
+    </div>
+  );
+}
+
+// Basic examples
+const original = { a: 1, b: 2 };
+const copy = { ...original };
+const merged = { ...original, b: 3, c: 4 };
+const { a, ...rest } = original;
+
+render(
+  <div>
+    <h4>Object Spread/Rest Examples:</h4>
+    <button 
+      onClick={displayUser}
+      className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+    >
+      Load User Profile
+    </button>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Original: {JSON.stringify(original)}</p>
+      <p>Copied: {JSON.stringify(copy)}</p>
+      <p>Merged: {JSON.stringify(merged)}</p>
+      <p>Rest: {JSON.stringify(rest)}</p>
+      <div id="user-profile"></div>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Practical Uses:</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h5 className="font-bold mb-1">Spread Operator</h5>
+                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                    <li>Combine user input with defaults</li>
+                    <li>Update React state immutably</li>
+                    <li>Clone objects before modification</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 className="font-bold mb-1">Rest Operator</h5>
+                  <ul className="list-disc pl-5 space-y-1 text-sm">
+                    <li>Filter sensitive data</li>
+                    <li>Pass through React props</li>
+                    <li>Exclude specific properties</li>
+                  </ul>
+                </div>
+              </div>
+
+              <h4 className="font-bold mt-4 mb-2">Key Notes:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>
+                  <strong>Shallow copy only</strong> - Nested objects need separate spreading
+                </li>
+                <li>
+                  <strong>Order matters</strong> - Last spread overrides previous properties
+                </li>
+                <li>
+                  <strong>Real-world data</strong> - Uses working API endpoints
+                </li>
+                <li>
+                  <strong>Type-safe</strong> - Works with TypeScript and modern JavaScript
+                </li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
       { id: "promise-finally", title: "Promise.prototype.finally()" },
       { id: "regexp-improvements", title: "RegExp Improvements" },
     ],
