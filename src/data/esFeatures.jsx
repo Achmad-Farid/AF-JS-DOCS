@@ -2247,7 +2247,141 @@ render(
           </>
         ),
       },
-      { id: "promise-finally", title: "Promise.prototype.finally()" },
+      {
+        id: "promise-finally",
+        title: "Promise.prototype.finally()",
+        content: () => (
+          <>
+            <p>
+              <code>finally()</code> allows you to execute code regardless of whether a Promise resolved or rejected, making it perfect for cleanup operations and finalizing UI states.
+            </p>
+
+            <LiveProvider
+              code={`const fetchData = async () => {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    throw error;
+  }
+};
+
+// Practical example with loading state
+async function loadData() {
+  const output = document.getElementById('output');
+  const loader = document.getElementById('loader');
+  
+  loader.style.display = 'block';
+  output.textContent = '';
+
+  fetchData()
+    .then(data => {
+      output.innerHTML = \`
+        <h3 class="font-bold">\${data.title}</h3>
+        <p>Task ID: \${data.id}</p>
+        <p>Completed: \${data.completed ? '✅' : '❌'}</p>
+      \`;
+    })
+    .catch(() => {
+      output.textContent = 'Failed to load data';
+      output.style.color = 'red';
+    })
+    .finally(() => {
+      loader.style.display = 'none';
+      console.log('Data fetch completed (success or failure)');
+    });
+}
+
+// Another example - database connection
+function mockDBAction() {
+  console.log('Opening DB connection...');
+  
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const success = Math.random() > 0.3;
+      success ? resolve('DB operation successful') : reject('DB error occurred');
+    }, 1000);
+  })
+    .finally(() => {
+      console.log('Closing DB connection');
+    });
+}
+
+// Basic usage
+Promise.resolve(42)
+  .finally(() => {
+    console.log('This always runs first');
+  })
+  .then(val => {
+    console.log('Then gets:', val);
+  });
+
+render(
+  <div>
+    <h4>Promise.finally() Examples:</h4>
+    <button 
+      onClick={loadData}
+      className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+    >
+      Load Todo Data
+    </button>
+    <div id="loader" className="hidden mt-2 text-blue-500">Loading...</div>
+    <div id="output" className="mt-4 p-4 bg-gray-100 rounded"></div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Features:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <strong>Always executes</strong> - Runs whether the Promise succeeds or fails
+                </li>
+                <li>
+                  <strong>No arguments</strong> - Doesn't receive resolution/rejection values
+                </li>
+                <li>
+                  <strong>Cleaner than duplicate code</strong> - Avoids repeating cleanup in both <code>.then()</code> and <code>.catch()</code>
+                </li>
+                <li>
+                  <strong>Chains like other Promise methods</strong> - Can be placed anywhere in the chain
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">Common Use Cases:</h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">UI States</h5>
+                  <ul className="list-disc pl-5 mt-1">
+                    <li>Hiding loading spinners</li>
+                    <li>Resetting form states</li>
+                    <li>Closing modals</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">Resource Management</h5>
+                  <ul className="list-disc pl-5 mt-1">
+                    <li>Closing database connections</li>
+                    <li>Releasing file handles</li>
+                    <li>Cleaning up timers</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+      },
       { id: "regexp-improvements", title: "RegExp Improvements" },
     ],
   },
