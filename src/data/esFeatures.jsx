@@ -2382,7 +2382,116 @@ render(
           </>
         ),
       },
-      { id: "regexp-improvements", title: "RegExp Improvements" },
+      {
+        id: "regexp-improvements",
+        title: "RegExp Improvements",
+        content: () => (
+          <>
+            <p>
+              Modern JavaScript introduced several RegExp enhancements including named capture groups, lookbehind assertions, Unicode property escapes, and the <code>dotAll</code> flag.
+            </p>
+
+            <LiveProvider
+              code={`// Named capture groups
+const dateRegex = /(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/;
+const dateMatch = '2024-01-15'.match(dateRegex);
+console.log(dateMatch.groups); // {year: "2024", month: "01", day: "15"}
+
+// Lookbehind assertions
+const priceRegex = /(?<=\\$)\\d+(?:\\.\\d{2})?/; // Match numbers after $
+console.log('Price: $29.99'.match(priceRegex)?.[0]); // "29.99"
+
+// Negative lookbehind
+const noNumberRegex = /(?<!\\d)\\.(?!\\d)/; // Dot not surrounded by digits
+console.log('3.14 and .env'.match(noNumberRegex)?.[0]); // "."
+
+// Unicode property escapes
+const emojiRegex = /\\p{Emoji}/gu;
+console.log('Hello 😊 World 🌍'.match(emojiRegex)); // ["😊", "🌍"]
+
+const greekRegex = /\\p{Script=Greek}/gu;
+console.log('α, β, gamma'.match(greekRegex)); // ["α", "β"]
+
+// dotAll flag (s)
+const multilineRegex = /hello.world/s;
+console.log(multilineRegex.test('hello\\nworld')); // true
+
+// Practical examples
+function parseLogEntry(log) {
+  const regex = /\\[(?<timestamp>[\\d-: ]+)\\] \\[(?<level>\\w+)\\] (?<message>.+)/;
+  const match = log.match(regex);
+  return match?.groups || {};
+}
+
+function extractPrices(text) {
+  const regex = /\\$(?<amount>\\d+(?:\\.\\d{2})?)/g;
+  return [...text.matchAll(regex)].map(m => m.groups.amount);
+}
+
+function validatePassword(password) {
+  // At least 1 uppercase, 1 lowercase, 1 number, 1 special char, 8+ chars
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$/;
+  return regex.test(password);
+}
+
+render(
+  <div>
+    <h4>RegExp Improvements Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Date groups: {JSON.stringify(dateMatch?.groups)}</p>
+      <p>Price match: {'Price: $29.99'.match(priceRegex)?.[0]}</p>
+      <p>Emojis found: {JSON.stringify('Hello 😊 World 🌍'.match(emojiRegex))}</p>
+      <p>Log parsed: {JSON.stringify(parseLogEntry('[2024-01-15 10:30:00] [INFO] Server started'))}</p>
+      <p>Prices: {JSON.stringify(extractPrices('Items: $10.99, $5.50, $20'))}</p>
+      <p>Password valid: {validatePassword('Pass123!') ? '✅' : '❌'}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">New Features:</h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">Named Capture Groups</h5>
+                  <code>/{`(?<name>pattern)`}/</code>
+                  <p className="mt-1">
+                    Access matches via <code>match.groups.name</code>
+                  </p>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">Lookbehind Assertions</h5>
+                  <code>/... (pattern)/</code>
+                  <p className="mt-1">Positive and negative lookbehinds</p>
+                </div>
+
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">dotAll Flag</h5>
+                  <code>/pattern/s</code>
+                  <p className="mt-1">Dot matches newlines</p>
+                </div>
+              </div>
+
+              <h4 className="font-bold mt-4 mb-2">Browser Support:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>All modern browsers support these features</li>
+                <li>Named groups and lookbehinds: ES2018+</li>
+                <li>Unicode properties: ES2018+</li>
+                <li>dotAll flag: ES2018+</li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
     ],
   },
   es2019: {
