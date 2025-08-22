@@ -2497,7 +2497,144 @@ render(
   es2019: {
     name: "ES2019 (ES10)",
     features: [
-      { id: "array-flat", title: "Array.prototype.flat() dan flatMap()" },
+      {
+        id: "array-flat",
+        title: "Array.prototype.flat() dan flatMap()",
+        content: () => (
+          <>
+            <p>
+              <code>flat()</code> and <code>flatMap()</code> provide elegant ways to work with nested arrays, flattening them or mapping and flattening in a single operation.
+            </p>
+
+            <LiveProvider
+              code={`// flat() examples
+const nestedArray = [1, [2, 3], [4, [5, 6]]];
+
+console.log(nestedArray.flat());      // [1, 2, 3, 4, [5, 6]]
+console.log(nestedArray.flat(2));     // [1, 2, 3, 4, 5, 6]
+console.log(nestedArray.flat(Infinity)); // [1, 2, 3, 4, 5, 6]
+
+// flatMap() examples - map then flat with depth 1
+const numbers = [1, 2, 3, 4];
+
+console.log(numbers.flatMap(x => [x, x * 2])); 
+// [1, 2, 2, 4, 3, 6, 4, 8]
+
+// Practical examples
+// 1. Flattening API responses
+const apiResponse = {
+  users: [
+    { name: 'Alice', hobbies: ['reading', 'swimming'] },
+    { name: 'Bob', hobbies: ['gaming', 'coding'] }
+  ]
+};
+
+const allHobbies = apiResponse.users.flatMap(user => user.hobbies);
+console.log('All hobbies:', allHobbies);
+
+// 2. Processing matrix data
+const matrix = [
+  [1, 2],
+  [3, 4],
+  [5, 6]
+];
+
+const flattenedMatrix = matrix.flat();
+console.log('Flattened matrix:', flattenedMatrix);
+
+// 3. Removing empty slots
+const sparseArray = [1, , 3, , 5];
+console.log('With empty slots:', sparseArray);
+console.log('Flattened:', sparseArray.flat()); // Removes empty slots
+
+// 4. String processing
+const sentences = ['Hello world', 'JavaScript is awesome'];
+const words = sentences.flatMap(sentence => sentence.split(' '));
+console.log('All words:', words);
+
+// 5. Complex data transformation
+const data = [
+  { category: 'fruits', items: ['apple', 'banana'] },
+  { category: 'veggies', items: ['carrot', 'spinach'] }
+];
+
+const allItems = data.flatMap(({ items, category }) => 
+  items.map(item => ({ item, category }))
+);
+console.log('Transformed data:', allItems);
+
+render(
+  <div>
+    <h4>flat() and flatMap() Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Nested array flat(): {JSON.stringify(nestedArray.flat())}</p>
+      <p>Nested array flat(2): {JSON.stringify(nestedArray.flat(2))}</p>
+      <p>flatMap doubling: {JSON.stringify(numbers.flatMap(x => [x, x * 2]))}</p>
+      <p>All hobbies: {JSON.stringify(allHobbies)}</p>
+      <p>All words: {JSON.stringify(words)}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Differences:</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">
+                    <code>flat(depth?)</code>
+                  </h5>
+                  <ul className="list-disc pl-5 text-sm space-y-1">
+                    <li>Flattens nested arrays</li>
+                    <li>Optional depth parameter (default: 1)</li>
+                    <li>Removes empty slots</li>
+                    <li>Returns new array</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">
+                    <code>flatMap(mapFn)</code>
+                  </h5>
+                  <ul className="list-disc pl-5 text-sm space-y-1">
+                    <li>Maps then flattens (depth 1)</li>
+                    <li>More efficient than map + flat</li>
+                    <li>Great for 1-level flattening</li>
+                    <li>Commonly returns arrays</li>
+                  </ul>
+                </div>
+              </div>
+
+              <h4 className="font-bold mt-4 mb-2">Practical Use Cases:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-sm">
+                <li>
+                  <strong>API data processing</strong> - Flatten nested responses
+                </li>
+                <li>
+                  <strong>Data transformation</strong> - Map and flatten in one pass
+                </li>
+                <li>
+                  <strong>Text processing</strong> - Split sentences into words
+                </li>
+                <li>
+                  <strong>Matrix operations</strong> - Flatten 2D arrays
+                </li>
+                <li>
+                  <strong>Cleanup</strong> - Remove empty array slots
+                </li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
       { id: "object-fromentries", title: "Object.fromEntries()" },
       { id: "optional-catch", title: "Optional catch binding" },
       { id: "string-trim", title: "String.trimStart() / trimEnd()" },
