@@ -2635,7 +2635,132 @@ render(
           </>
         ),
       },
-      { id: "object-fromentries", title: "Object.fromEntries()" },
+      {
+        id: "object-fromentries",
+        title: "Object.fromEntries()",
+        content: () => (
+          <>
+            <p>
+              <code>Object.fromEntries()</code> transforms a list of key-value pairs into an object, serving as the inverse of <code>Object.entries()</code>.
+            </p>
+
+            <LiveProvider
+              code={`// Basic usage
+const entries = [
+  ['name', 'Alice'],
+  ['age', 25],
+  ['city', 'New York']
+];
+
+const obj = Object.fromEntries(entries);
+console.log(obj); // {name: "Alice", age: 25, city: "New York"}
+
+// Practical examples
+// 1. Convert URLSearchParams to object
+const urlParams = new URLSearchParams('name=Alice&age=25&city=NY');
+const paramsObj = Object.fromEntries(urlParams);
+console.log('URL params:', paramsObj);
+
+// 2. Transform array of arrays
+const data = [
+  ['username', 'alice123'],
+  ['email', 'alice@example.com'],
+  ['role', 'admin']
+];
+const user = Object.fromEntries(data);
+console.log('User object:', user);
+
+// 3. Map transformation
+const map = new Map([
+  ['key1', 'value1'],
+  ['key2', 'value2'],
+  ['key3', 'value3']
+]);
+const mapObj = Object.fromEntries(map);
+console.log('Map to object:', mapObj);
+
+// 4. Data processing and transformation
+const products = [
+  { id: 1, name: 'Laptop', price: 999 },
+  { id: 2, name: 'Mouse', price: 25 }
+];
+
+// Create lookup table by ID
+const productLookup = Object.fromEntries(
+  products.map(p => [p.id, p])
+);
+console.log('Product lookup:', productLookup);
+
+// 5. Filtering and restructuring
+const original = { a: 1, b: 2, c: 3, d: 4 };
+const filtered = Object.fromEntries(
+  Object.entries(original).filter(([key, value]) => value > 2)
+);
+console.log('Filtered object:', filtered);
+
+render(
+  <div>
+    <h4>Object.fromEntries() Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>From entries: {JSON.stringify(obj)}</p>
+      <p>URL params: {JSON.stringify(paramsObj)}</p>
+      <p>User object: {JSON.stringify(user)}</p>
+      <p>Product lookup: {JSON.stringify(productLookup)}</p>
+      <p>Filtered object: {JSON.stringify(filtered)}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">Key Features:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <strong>Inverse of Object.entries()</strong> - Completes the object transformation cycle
+                </li>
+                <li>
+                  <strong>Works with iterables</strong> - Arrays, Maps, URLSearchParams, etc.
+                </li>
+                <li>
+                  <strong>ES2019 standard</strong> - Available in modern browsers and Node.js
+                </li>
+                <li>
+                  <strong>Great for data transformation</strong> - Filter, map, then convert back to object
+                </li>
+              </ul>
+
+              <h4 className="font-bold mt-4 mb-2">Common Use Cases:</h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">Data Transformation</h5>
+                  <ul className="list-disc pl-5 mt-1">
+                    <li>Array → Object conversion</li>
+                    <li>Map → Object conversion</li>
+                    <li>URL params parsing</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">Object Manipulation</h5>
+                  <ul className="list-disc pl-5 mt-1">
+                    <li>Filtering properties</li>
+                    <li>Renaming keys</li>
+                    <li>Restructuring data</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </>
+        ),
+      },
       { id: "optional-catch", title: "Optional catch binding" },
       { id: "string-trim", title: "String.trimStart() / trimEnd()" },
       { id: "symbol-description", title: "Symbol.description" },
