@@ -2761,7 +2761,150 @@ render(
           </>
         ),
       },
-      { id: "optional-catch", title: "Optional catch binding" },
+      {
+        id: "optional-catch",
+        title: "Optional catch binding",
+        content: () => (
+          <>
+            <p>Optional catch binding allows you to omit the error parameter in catch blocks when you don't need it, making error handling cleaner when you only care about the fact that an error occurred, not the error itself.</p>
+
+            <LiveProvider
+              code={`// Traditional catch with parameter
+try {
+  throw new Error('Something went wrong');
+} catch (error) {
+  console.log('An error occurred (with parameter)');
+}
+
+// Optional catch binding (no parameter)
+try {
+  throw new Error('Something else went wrong');
+} catch {
+  console.log('An error occurred (no parameter)');
+}
+
+// Practical examples
+// 1. Fallback value without needing error details
+function getConfig() {
+  try {
+    const config = JSON.parse(localStorage.getItem('appConfig'));
+    return config || { theme: 'light' };
+  } catch {
+    // Don't care why parsing failed, just return default
+    return { theme: 'light' };
+  }
+}
+
+// 2. Retry mechanism
+async function fetchWithRetry(url, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url);
+      return await response.json();
+    } catch {
+      // Don't need error details for retry logic
+      if (i === retries - 1) throw new Error('All retries failed');
+      console.log(\`Retry \${i + 1} failed, trying again...\`);
+    }
+  }
+}
+
+// 3. Feature detection
+function isFeatureSupported() {
+  try {
+    // Try to use the feature
+    new SharedArrayBuffer(1);
+    return true;
+  } catch {
+    // Feature not supported
+    return false;
+  }
+}
+
+// 4. Input validation
+function parseNumber(input) {
+  try {
+    return Number(input);
+  } catch {
+    return NaN;
+  }
+}
+
+// 5. Optional operation
+function tryOperation(operation) {
+  try {
+    return operation();
+  } catch {
+    return null; // Operation failed, but we don't care why
+  }
+}
+
+render(
+  <div>
+    <h4>Optional Catch Binding Examples:</h4>
+    <div className="mt-4 p-4 bg-gray-100 rounded">
+      <p>Config: {JSON.stringify(getConfig())}</p>
+      <p>Feature supported: {isFeatureSupported().toString()}</p>
+      <p>Parse number 'abc': {parseNumber('abc').toString()}</p>
+      <p>Try operation result: {tryOperation(() => JSON.parse('invalid')).toString()}</p>
+    </div>
+  </div>
+);`}
+              noInline
+            >
+              <div className="rounded overflow-hidden border border-gray-300 bg-white">
+                <LiveEditor className="bg-gray-900 text-white p-4 text-sm font-mono" />
+                <div className="bg-gray-100 p-4 border-t">
+                  <strong>Output:</strong>
+                  <LivePreview />
+                </div>
+              </div>
+            </LiveProvider>
+
+            <div className="mt-4 p-4 bg-blue-50 rounded">
+              <h4 className="font-bold mb-2">When to Use Optional Catch:</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">✅ Use Optional Catch</h5>
+                  <ul className="list-disc pl-5 text-sm space-y-1">
+                    <li>Fallback values</li>
+                    <li>Retry mechanisms</li>
+                    <li>Feature detection</li>
+                    <li>Input validation</li>
+                    <li>When error details don't matter</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-3 rounded border">
+                  <h5 className="font-bold">❌ Use Regular Catch</h5>
+                  <ul className="list-disc pl-5 text-sm space-y-1">
+                    <li>Error logging</li>
+                    <li>User error messages</li>
+                    <li>Error analysis</li>
+                    <li>Debugging</li>
+                    <li>When you need error details</li>
+                  </ul>
+                </div>
+              </div>
+
+              <h4 className="font-bold mt-4 mb-2">Benefits:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>
+                  <strong>Cleaner code</strong> - Less visual clutter when error parameter is unused
+                </li>
+                <li>
+                  <strong>Better performance</strong> - No need to create unused error objects
+                </li>
+                <li>
+                  <strong>Clear intent</strong> - Shows that error details are intentionally ignored
+                </li>
+                <li>
+                  <strong>ES2019 feature</strong> - Supported in all modern environments
+                </li>
+              </ul>
+            </div>
+          </>
+        ),
+      },
       { id: "string-trim", title: "String.trimStart() / trimEnd()" },
       { id: "symbol-description", title: "Symbol.description" },
     ],
